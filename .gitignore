@@ -1,5 +1,6 @@
 *.log
 *.pyc
+.ipynb_checkpoints
 0-Pre-requisites/influxdb_data/
 0-Pre-requisites/influxdb_config/
 1-Incubator-Service/average_service.py

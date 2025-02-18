@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>3-IncubatorDT</title>
+  </head>
+  <body>
+    <header></header>
+    <main>
+
+<h1>3-IncubatorDT</h1>
+
+      This tutorial will connect the visualisation created in the last part with the simulated incubator over RabbitMQ. We will have the following steps:
+
+      <ul>
+
+          <li>Set up the C# project</li>
+          <li>Start listening to RabbitMQ messages</li>
+          <li>Display the data from RabbitMQ</li>
+          <li>Add a button to open the lid</li>
+          <li>Animate the lid opening</li>
+      </ul>
+
+This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator/tree/master/software/digital_twin/visualization">existing incubator visualization</a> created by <a href="https://github.com/lisa5814">Lisa Maria Huynh</a>.
+
+        <h2>a. Set up the C# project</h2>
+
+        <ul>
+            <li>1. In the project, click on the 'Project' menu, then 'Tools', then 'C#', then 'Create C# solution'.</li>
+        </ul>
+
+        <img src="figures/c_sharp_solution.png" height="389" width="847"/>
+
+        <ul>
+            <li>2. Close Godot.</li>
+            <li>3. Copy the 'incubator.csproj' located next to this html file to your project folder. If asked, overwrite the 'incubator.csproj' in that folder.</li>
+            <li>4. If you didn't overwrite the file, this means your project is named something else. That's fine. Delete the file named 'YOUR_PROJECT_NAME.csproj'. Rename 'incubator.csproj' so that it replaces the file you just deleted.</li>
+            <li>5. Open up Godot and go back to the project. There should be a little hammer icon in the top-right. Click it to build the C# project.</li>
+            <li>Note: Godot will auto-build the project before running, so you can just hit the play button when you want to run.</li>
+        </ul>
+
+    <img src="figures/hammer.png" height="156" width="149"/>
+
+    <h2>b. Start listening to RabbitMQ messages</h2>
+
+    We're very close to getting the data from RabbitMQ into Godot. At the end of this section, we'll have a Digital Shadow.
+
+    <ul>
+        <li>6. From the 'scripts/' folder, copy the 'RabbitMQListener.cs' file to your project directory. This has the defaults for RabbitMQ set up already.</li>
+        <li>7. Create a new node in the scene tree by right-clicking the incubator node at the top of the pane on the left. Find the 'Node' type, which has a white ring icon. Rename the node to 'rmq_listener'.</li>
+    </ul>
+    <img src="figures/white_ring.png" height="29" width="126"/>
+
+    <ul>
+        <li>8. Right-click this new node, and select 'Attach Script'.</li>
+        <li>9. At the top of this new node, by 'language', select 'C#'</li>
+        <li>10. On the right, select the folder icon, and select the 'RabbitMQListener.cs' file.</li>
+    </ul>
+
+    <img src="figures/load_c_sharp_script.png" height="411" width="478"/>
+
+    <ul>
+        <li>11. Right-click on the top-most node in your scene tree. It should be named 'incubator_root'. Select 'Attach script'. The defaults should be okay, see the figure below.</li>
+    </ul>
+
+        <img src="figures/root_script.png" height="407" width="471"/>
+
+    <ul>
+        <li>12. Enter the below text into this script file. Note the tabs for spacing in the funcs (short for functions). GDScript is like Python, where the spacing matters. Below is a figure of it within Godot to help you if needed.</li>
+        <li>13. What this does is: a) finds the 'rmq_listener' node in the tree, b) connects to it, and c) for every message received, print it out.</li>
+    </ul>
+
+        <pre>
+            extends Node3D
+            @onready var rmq_connection = get_node("rmq_listener")
+
+            func _ready() -> void:
+                rmq_connection.connect("OnMessage", _on_message)
+
+            func _on_message(message):
+                var data = JSON.parse_string(message)
+                print(data)</pre>
+        <img src="figures/root_code.png" height="250" width="634"/>
+
+    <ul>
+        <li>14. Follow the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator?tab=readme-ov-file#running-the-digital-twin">instructions</a> to make sure that the simulated incubator DT is running on your machine. Ex. By running 'python -m startup.start_all_services' in the 'incubator_dt/software/' folder. </li>
+        <li>15. Go back to Godot, and run the project.</li>
+        <li>16. If everything went right, then soon you'll see some debugging info. These are the RabbitMQ messages being read in Godot!</li>
+    </ul>
+
+    <img src="figures/rmq_in_godot.png" height="247" width="549"/>
+
+    </main>
+
+    <footer></footer>
+
+  </body>
+</html>

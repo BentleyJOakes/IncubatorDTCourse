@@ -2,31 +2,30 @@
 <html lang="">
   <head>
     <meta charset="utf-8">
-    <title>1-IncubatorViz</title>
+    <title>2-IncubatorViz</title>
   </head>
   <body>
     <header></header>
     <main>
 
-<h1>1-IncubatorViz</h1>
+<h1>2-IncubatorViz</h1>
 
-      This tutorial will walk you through the creation of a visualization for the incubator. We will have the following steps:
+      This tutorial will walk you through the creation of a visualization for the incubator (a digital model). We will have the following steps:
 
       <ul>
             <li>New project and add a cube</li>
-            <li>Replace the cube with the incubator box</li>
+          <li>Camera and lighting fixes</li>
+          <li>Adding a script to move the camera</li>
+            <li>Adding the incubator box</li>
             <li>Add the other incubator components</li>
-            <li>Listen to RabbitMQ</li>
-          <li>Display the data from RabbitMQ</li>
-          <li>Add a button to open the lid</li>
-          <li>Animate the lid opening</li>
-
       </ul>
 
-<h2>a. New project and add a cube</h2>
+This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator/tree/master/software/digital_twin/visualization">existing incubator visualization</a> created by <a href="https://github.com/lisa5814">Lisa Maria Huynh</a>.
+
+        <h2>a. New project and add a cube</h2>
 
         <ul>
-            <li>1. Start a new project. If you're in a project already, go to 'Project' then select 'Quit to Project List'.</li>
+            <li>1. Start a new project, named 'incubator'. If you're in a project already, go to 'Project' then select 'Quit to Project List'.</li>
             <li>2. On the left, click '3D scene'.</li>
         </ul>
 
@@ -50,27 +49,27 @@
         <li>9. Find the 'Mesh' property for the 'MeshInstance3D' node. Click the arrow to the right, then select 'New BoxMesh'</li>
     </ul>
 
-    <img src="figures/box.png" height="351" width="744"/></main>
+    <img src="figures/box.png" height="433" width="284"/></main>
 
     <ul>
         <li>10. Right-click on the 'incubator_root' node on the left again and select 'Add Child Node' </li>
         <li>11. This time, add a 'Camera3D'</li>
     </ul>
 
-    <img src="figures/camera.png" height="351" width="744"/></main>
+    <img src="figures/camera.png" height="351" width="901"/></main>
 
     <ul>
         <li>12. Make sure the 'Camera3D' node is selected on the left. </li>
         <li>13. Then, click on the blue arrow in the middle of the screen (on the 'gizmo'), and drag to the left. Then, click on the green arrow and drag up. This will move the camera. The figure below is after the camera has been moved</li>
     </ul>
 
-    <img src="figures/camera_move.png" height="351" width="744"/></main>
+    <img src="figures/camera_move.png" height="364" width="579"/></main>
 
     <ul>
         <li>14. Click the 'triangle' play button in the top-right to see the viz. It should be a gray square, which is a good start!</li>
     </ul>
 
-    <img src="figures/gray_cube.png" height="351" width="744"/></main>
+    <img src="figures/gray_cube.png" height="273" width="295"/></main>
 
 <h2>b. Camera and lighting fixes</h2>
 
@@ -96,7 +95,7 @@
         <li>21. Feel free to play around with the preview sun and environment colours. Then click 'Add Sun to Scene' and 'Add Environment to Scene'. Now, when we hit the play button, it should look like it does in the editor.</li>
     </ul>
 
-    <img src="figures/preview.png" height="409" width="900"/>
+    <img src="figures/preview.png" height="266" width="427"/>
 
     <h2>c. Adding a script to move the camera</h2>
 
@@ -105,7 +104,7 @@
         <li>23. Find the 'camera.gd' script in the 'scripts' folder. Copy it to your project directory.</li>
     </ul>
 
-    <img src="figures/camera_script_filesystem.png" height="409" width="900"/>
+    <img src="figures/camera_script_filesystem.png" height="251" width="277"/>
 
 
     <ul>
@@ -113,7 +112,7 @@
         <li>25. Click the folder icon to the right of the 'path'. Select the 'camera.gd' script and then hit 'load'.</li>
     </ul>
 
-    <img src="figures/camera_move.png" height="351" width="744"/></main>
+    <img src="figures/camera_move.png" height="364" width="579"/></main>
 
 
     <ul>
@@ -122,35 +121,35 @@
         <li>28. Try running the viz now. You should be able to fly around with the W, A, S, and D keys. If you hold the right mouse button and move the mouse, you should be able to look around.</li>
     </ul>
 
-    <img src="figures/camera_script_code.png" height="409" width="900"/>
+    <img src="figures/camera_script_code.png" height="331" width="986"/>
 
     <h2>d. Adding the incubator box</h2>
 
     <ul>
-        <li>29. Let's change the cube into the incubator itself. Click on the '3D' tab at the top of the editor to make sure you're in the 3D view.</li>
+        <li>29. Let's replace the cube with the incubator itself. Click on the '3D' tab at the top of the editor to make sure you're in the 3D view.</li>
 
     </ul>
 
-    <img src="figures/3d_tab.png" height="409" width="900"/>
+    <img src="figures/3d_tab.png" height="101" width="386"/>
 
     <ul>
         <li>30. Find the 'box.glb' file in the 'models' directory. Copy it into your project folder.</li>
         <li>31. When you switch back to Godot, it should import the file and add it to the filesystem in the bottom left.</li>
     </ul>
 
-    <img src="figures/box_filesystem.png" height="409" width="900"/>
+    <img src="figures/box_filesystem.png" height="277" width="274"/>
 
     <ul>
         <li>32. Simply click-and-drag the 'box.glb' file from this filesystem pane to the main window. Place it over the cube.</li>
         <li>33. Now delete the cube.</li>
-        <li>34. Great! We have the beginning of our Digital Twin for the incubator.</li>
+        <li>34. Great! We have the incubator model in Godot now.</li>
     </ul>
 
-    <img src="figures/box_in_scene.png" height="409" width="900"/>
+    <img src="figures/box_in_scene.png" height="404" width="581"/>
 
     <ul>
-        <li>35. As a note, the scale of the incubator and the other components is not one-to-one with reality. The mesh is defined as around 2 metres by 3 metres. This is fine as long as everything is the same scale. But if you start mixing models, this might be not what you want.</li>
-        <li>36. To fix this, double-click on the 'box.glb' file. A window will open up where you can set the 'root scale'. Higher numbers will make it bigger when you click 'reimport'. </li>
+        <li>35. As a note, the scale of the incubator and the other components is not one-to-one with reality. The mesh is defined as around 2 metres by 3 metres (both Blender and Godot use metres by default). This unrealistic scale is fine as long as everything is the same scale. But if you start mixing models, this might be not what you want.</li>
+        <li>36. If in the future you want to fix this, double-click on the 'box.glb' file. A window will open up where you can set the 'root scale'. Higher numbers will make it bigger when you click 'reimport'. </li>
     </ul>
 
     <h2>e. Adding the other components</h2>
@@ -159,8 +158,36 @@
         <li>37. Follow the steps above from part d with the 'lid.glb', 'fan.glb', and 'tempeh.glb'. As a technical note, these files were extracted from <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator/blob/master/figures/incubator_plant.obj">the incubator .obj file</a> using Blender.</li>
         <li>38. Position and rotate the objects inside the incubator box.</li>
     </ul>
-    <img src="figures/partial_incubator.png" height="409" width="900"/>
+    <img src="figures/partial_incubator.png" height="566" width="889"/>
 
+    <ul>
+        <li>38. Add a 'MeshInstance3d' node to the incubator (in the scene tree to the left). Rename the node to 'heater'. In the inspector (to the right), under the 'Mesh' property, add a 'New BoxMesh'.</li>
+        <li>39. Change the transform of this 'MeshInstance3D' to be Position: x=0, y=0.2, z=0.2 Scale: x=0.8, y=0.1, z=0.8. You may need to click the chain to the right of the scale to allow scaling in different dimensions (located in the very bottom-right of the screenshot below).</li>
+    </ul>
+
+    <img src="figures/heater_placed.png" height="592" width="1119"/>
+
+    <ul>
+        <li>40. Make sure the heater node is selected. At the top of the inspector, click on the 'Surface Material Override' category, then next to the '0', click the arrow, and then 'New StandardMaterial3D'.</li>
+    </ul>
+
+    <img src="figures/heater_material_create.png" height="328" width="311"/>
+
+    <ul>
+        <li>41. There should now be a white orb in that spot. This is the preview of the material of the mesh.</li>
+        <li>42. Click on the orb (gray in the figure below). We can then set the physically-based rendering (PBR) properties of the material. In the example below, the albedo (the base colour) is set to gray. Feel free to play around with these properties.</li>
+    </ul>
+
+    <img src="figures/heater_material.png" height="757" width="309"/>
+
+
+    <h2>f. Conclusion</h2>
+
+    <p>Below is one version of this project. Don't worry if yours isn't exactly the same.</p>
+
+    <img src="figures/part_1_final.png" height="559" width="904"/>
+
+    <p>That was a lot of work, but we have a very nice Digital Model of the incubator. In the next section, we'll turn this into a Digital Shadow, and then a Digital Twin.</p>
     <footer></footer>
 
   </body>

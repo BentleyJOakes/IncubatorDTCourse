@@ -2,13 +2,13 @@
 <html lang="">
   <head>
     <meta charset="utf-8">
-    <title>3-IncubatorDT</title>
+    <title>3-IncubatorShadow</title>
   </head>
   <body>
     <header></header>
     <main>
 
-<h1>3-IncubatorDT</h1>
+<h1>3-IncubatorShadow</h1>
 
       This tutorial will connect the visualisation created in the last part with the simulated incubator over RabbitMQ. We will have the following steps:
 
@@ -16,9 +16,7 @@
 
           <li>Set up the C# project</li>
           <li>Start listening to RabbitMQ messages</li>
-          <li>Display the data from RabbitMQ</li>
-          <li>Add a button to open the lid</li>
-          <li>Animate the lid opening</li>
+          <li>Use RabbitMQ messages to change the visualisation</li>
       </ul>
 
 This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator/tree/master/software/digital_twin/visualization">existing incubator visualization</a> created by <a href="https://github.com/lisa5814">Lisa Maria Huynh</a>.
@@ -111,7 +109,7 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
         <ul>
             <li>22. Go back to the 'incubator.gd' script. This can be done by: a) clicking the scroll icon next to the 'incubator_root',  b. finding 'incubator.gd' in the filesystem, or by clicking the 'Script' tab at the top of the editor.</li>
             <li>23. Add the three new lines from code below to the '_on_message' function.</li>
-            <li>24. Explanation: The first line makes sure the message is from the right place. The second line finds the node within the scene tree, by using the '%' operator and the node name. The 'as Node3D' part makes sure the following line know this is a Node3D. The last line changes the 'text' property on the node.</li>
+            <li>24. Explanation: The first line makes sure the message is from the right place. The second line finds the node within the scene tree, by using the '%' operator and the node name. The 'as Node3D' part makes sure the following line knows this is a Node3D. The last line changes the 'text' property on the node.</li>
         </ul>
 
         <pre>
@@ -123,7 +121,7 @@ if data.measurement == "low_level_driver":
 
         <ul>
             <li>25. If you start the viz, when a new message is received from the incubator, you should see the room temperature update.</li>
-            <li>26. Play around with the node settings. Here, the 'billboard' property is enabled, so that the text always faces the camera.</li>
+            <li>26. Play around with the 'Label3D' node settings. Here, the 'billboard' property is enabled, so that the text always faces the camera.</li>
         </ul>
 
         <img src="figures/room_temp_billboard.png" height="196" width="439"/>
@@ -140,7 +138,7 @@ if data.measurement == "low_level_driver":
 
         <ul>
             <li>30. Go back to the 'incubator.gd' script.</li>
-            <li>31. Add the following code to the '_on_message' function.</li>
+            <li>31. Add the below code to the '_on_message' function.</li>
             <li>32. Explanation: The first two lines are to set the text of the heater label. The next line gets the material on the mesh of the heater. The if/else sets the colour of the material. And then the last line sets the material back to the mesh.</li>
         </ul>
         <pre>
@@ -179,7 +177,14 @@ if data.fields.fan_on:
         <p>And yes, this means the whole fan rotates. Feel free to improve this if you want, possibly by adding a fan blade mesh.</p>
 
 
-    <h2>d. Send a RabbitMQ message</h2>
+    <h2>d. Conclusion</h2>
+<p>Below is how this project looks at the end of this tutorial. Again, feel free to make your own modifications.</p>
+        <img src="figures/final.png" height="470" width="706"/>
+
+        <ul>
+            <li>We're close to having a Digital Twin of the incubator. The last step would be to send a RabbitMQ message back to the incubator simulation.</li>
+            <li>However, we'll stop here for now with a Digital Shadow, as this step requires complex configuration of the incubator simulation code itself. </li>
+        </ul>
 
     </main>
 

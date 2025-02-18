@@ -90,6 +90,97 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
 
     <img src="figures/rmq_in_godot.png" height="247" width="549"/>
 
+    <h2>c. Use RabbitMQ messages to change the visualisation</h2>
+
+        <h3>Visualising the Room Temperature</h3>
+
+        <ul>
+            <li>17. Create a 'Label3D' node in the scene tree. This will make a child node.</li>
+            <li>18. Rename this node to be 'room_temp'.</li>
+            <li>19. Move this node in the 3D space outside of the incubator box, either by using the gizmo or by setting the 'position' property.</li>
+            </ul>
+
+        <img src="figures/label3d_create.png" height="319" width="391"/>
+
+        <ul>
+            <li>20. Right-click on this node in the scene tree, and select '% access with unique name'. There should now be a '%' symbol beside the node in the scene tree (see the figure below).</li>
+            <li>21. As an explanation, this allows Godot to be able to find any node in this scene tree using just the name. We'll use it for the temperature labels to make things easier.</li>
+        </ul>
+        <img src="figures/unique_nodes.png" height="42" width="247"/>
+
+        <ul>
+            <li>22. Go back to the 'incubator.gd' script. This can be done by: a) clicking the scroll icon next to the 'incubator_root',  b. finding 'incubator.gd' in the filesystem, or by clicking the 'Script' tab at the top of the editor.</li>
+            <li>23. Add the three new lines from code below to the '_on_message' function.</li>
+            <li>24. Explanation: The first line makes sure the message is from the right place. The second line finds the node within the scene tree, by using the '%' operator and the node name. The 'as Node3D' part makes sure the following line know this is a Node3D. The last line changes the 'text' property on the node.</li>
+        </ul>
+
+        <pre>
+if data.measurement == "low_level_driver":
+    var room_temp_label = %room_temp as Label3D
+    room_temp_label.text = str(snapped(data.fields.t3, 0.01)) + "°C"
+        </pre>
+        <img src="figures/room_temp_code.png" height="194" width="674"/>
+
+        <ul>
+            <li>25. If you start the viz, when a new message is received from the incubator, you should see the room temperature update.</li>
+            <li>26. Play around with the node settings. Here, the 'billboard' property is enabled, so that the text always faces the camera.</li>
+        </ul>
+
+        <img src="figures/room_temp_billboard.png" height="196" width="439"/>
+
+        <h3>Visualising the Heater Temperature and State</h3>
+
+        <ul>
+            <li>27. Add a new 'Label3d' node as a child of the 'heater' node. This is done by right-clicking on the 'heater' node and selecting 'Add New Child'.</li>
+            <li>28. Name this new node as 'heater_label'.</li>
+            <li>29. For the heater and label nodes, right-click on them and select '% access with unique name'.</li>
+        </ul>
+
+        <img src="figures/heater_label.png" height="54" width="247"/>
+
+        <ul>
+            <li>30. Go back to the 'incubator.gd' script.</li>
+            <li>31. Add the following code to the '_on_message' function.</li>
+            <li>32. Explanation: The first two lines are to set the text of the heater label. The next line gets the material on the mesh of the heater. The if/else sets the colour of the material. And then the last line sets the material back to the mesh.</li>
+        </ul>
+        <pre>
+var heater_label = %heater_label as Label3D
+heater_label.text = str(snapped(data.fields.average_temperature, 0.01)) + "°C"
+
+var heater_material = %heater.get_surface_override_material(0) as StandardMaterial3D
+if data.fields.heater_on:
+    heater_material.albedo_color = Color.RED
+else:
+    heater_material.albedo_color = Color.DIM_GRAY
+%heater.set_surface_override_material(0, heater_material)
+        </pre>
+        <img src="figures/heater_code.png" height="441" width="904"/>
+
+        <p>Now when you run the viz, you should see the heater temperature, and it turning red and gray.</p>
+
+        <img src="figures/heater_state.png" height="424" width="504"/>
+
+        <h3>Visualising the Fan State</h3>
+
+        <ul>
+            <li>33. Make sure that the fan node is set with '% Access with unique name'. </li>
+            <li>34. Then, add this code to the '_on_message' function in 'incubator.gd'. </li>
+            <li>35. Explanation: If the fan is on, the second line creates a repeating animation. The last line turns the fan around the X axis. You might need to tweak this depending on how your fan is rotated.</li>
+        </ul>
+
+        <pre>
+if data.fields.fan_on:
+    var fan_tween = get_tree().create_tween().set_loops(3)
+    fan_tween.tween_property(%fan, "global_rotation", Vector3(TAU, 0, 0), 1).as_relative()
+        </pre>
+
+        <img src="figures/fan_rotate.png" height="353" width="416"/>
+
+        <p>And yes, this means the whole fan rotates. Feel free to improve this if you want, possibly by adding a fan blade mesh.</p>
+
+
+    <h2>d. Send a RabbitMQ message</h2>
+
     </main>
 
     <footer></footer>

@@ -133,7 +133,7 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
     <img src="figures/3d_tab.png" height="101" width="386"/>
 
     <ul>
-        <li>30. Find the 'box.glb' file in the 'models' directory. Copy it into your project folder.</li>
+        <li>30. Find the 'box.glb' file in the 'models' directory (next to this html file). Copy it into your project folder.</li>
         <li>31. When you switch back to Godot, it should import the file and add it to the filesystem in the bottom left.</li>
     </ul>
 
@@ -149,7 +149,7 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
 
     <ul>
         <li>35. As a note, the scale of the incubator and the other components is not one-to-one with reality. The mesh is defined as around 2 metres by 3 metres (both Blender and Godot use metres by default). This unrealistic scale is fine as long as everything is the same scale. But if you start mixing models, this might be not what you want.</li>
-        <li>36. If in the future you want to fix this, double-click on the 'box.glb' file. A window will open up where you can set the 'root scale'. Higher numbers will make it bigger when you click 'reimport'. </li>
+        <li>36. If in the future you want to fix this, double-click on the 'box.glb' file in the lower-left filesystem pane. A window will open up where you can set the 'root scale'. Higher numbers will make it bigger when you click 'reimport'. </li>
     </ul>
 
     <h2>e. Adding the other components</h2>
@@ -161,8 +161,8 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
     <img src="figures/partial_incubator.png" height="566" width="889"/>
 
     <ul>
-        <li>38. Add a 'MeshInstance3d' node to the incubator (in the scene tree to the left). Rename the node to 'heater'. In the inspector (to the right), under the 'Mesh' property, add a 'New BoxMesh'.</li>
-        <li>39. Change the transform of this 'MeshInstance3D' to be Position: x=0, y=0.2, z=0.2 Scale: x=0.8, y=0.1, z=0.8. You may need to click the chain to the right of the scale to allow scaling in different dimensions (located in the very bottom-right of the screenshot below).</li>
+        <li>38. Add a 'MeshInstance3d' node to the incubator (in the scene tree to the left). Rename the node to 'heater'. In the inspector (to the right), under the 'Mesh' property, add a 'New BoxMesh' by clicking on the arrow to the right.</li>
+        <li>39. Change the 'transform' property of this 'MeshInstance3D' to be Position: x=0, y=0.2, z=0.2 Scale: x=0.8, y=0.1, z=0.8. You may need to click the chain to the right of the scale to allow scaling in different dimensions (located in the very bottom-right of the screenshot below).</li>
     </ul>
 
     <img src="figures/heater_placed.png" height="592" width="1119"/>
@@ -187,7 +187,7 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
 
     <img src="figures/part_1_final.png" height="559" width="904"/>
 
-    <p>That was a lot of work, but we have a very nice Digital Model of the incubator. In the next section, we'll turn this into a Digital Shadow, and then a Digital Twin.</p>
+    <p>That was a lot of work, but we have a very nice Digital Model of the incubator. In the next section, we'll turn this into a Digital Shadow of the incubator.</p>
     <footer></footer>
 
   </body>

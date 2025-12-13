@@ -44,7 +44,7 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
     We're very close to getting the data from RabbitMQ into Godot. At the end of this section, we'll have a Digital Shadow.
 
     <ul>
-        <li>6. From the 'scripts/' folder, copy the 'RabbitMQListener.cs' file to your project directory. This has the defaults for RabbitMQ set up already.</li>
+        <li>6. From the 'scripts/' folder, copy the <a href="scripts/RabbitMQListener.cs">RabbitMQListener.cs</a> file to your project directory. This has the defaults for RabbitMQ set up already.</li>
         <li>7. Create a new node in the scene tree by right-clicking the incubator node at the top of the pane on the left. Find the 'Node' type, which has a white ring icon. Rename the node to 'rmq_listener'.</li>
     </ul>
     <img src="figures/white_ring.png" height="29" width="126"/>
@@ -69,19 +69,21 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
     </ul>
 
         <pre>
-            extends Node3D
-            @onready var rmq_connection = get_node("rmq_listener")
+    extends Node3D
+    @onready var rmq_connection = get_node("rmq_listener")
 
-            func _ready() -> void:
-                rmq_connection.connect("OnMessage", _on_message)
+    func _ready() -> void:
+        rmq_connection.connect("OnMessage", _on_message)
 
-            func _on_message(message):
-                var data = JSON.parse_string(message)
-                print(data)</pre>
+    func _on_message(message):
+        var data = JSON.parse_string(message)
+        print(data)
+            </pre>
         <img src="figures/root_code.png" height="250" width="634"/>
 
     <ul>
-        <li>14. Follow the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator?tab=readme-ov-file#running-the-digital-twin">instructions</a> to make sure that the simulated incubator DT is running on your machine. Ex. By running 'python -m startup.start_all_services' in the 'incubator_dt/software/' folder. </li>
+        <li>14. Follow the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator?tab=readme-ov-file#running-the-digital-twin">instructions</a> to make sure that the simulated incubator DT is running on your machine. Ex. By running 'python -m startup.start_all_services' in the 'incubator_dt/software/' folder. As has been the case in previous jupyter notebooks, uncomment the unnecessary lines in the 'start_all_services.py' file (see <a href="../1-Incubator-Service/0-Service-Dependencies.ipynb">0-Service-Dependencies</a>). </li>
+        </li>
         <li>15. Go back to Godot, and run the project.</li>
         <li>16. If everything went right, then soon you'll see some debugging info. These are the RabbitMQ messages being read in Godot!</li>
     </ul>
@@ -115,8 +117,7 @@ This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/e
         <pre>
 if data.measurement == "low_level_driver":
     var room_temp_label = %room_temp as Label3D
-    room_temp_label.text = str(snapped(data.fields.t3, 0.01)) + "°C"
-        </pre>
+    room_temp_label.text = str(snapped(data.fields.t3, 0.01)) + "°C"</pre>
         <img src="figures/room_temp_code.png" height="194" width="674"/>
 
         <ul>

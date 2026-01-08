@@ -26,7 +26,7 @@ This repository is divided into ordered modules. Each module is in a separate fo
 
 If you encounter any problem, or have any questions, follow the steps:
 1. Consult the [Frequently Asked Questions](#frequently-asked-questions).
-2. Check if there are closed or open [issues](https://github.com/clagms/IncubatorDTCourse/issues)
+2. Check if there are closed or open [issues](https://github.com/BentleyJOakes/IncubatorDTCourse/issues)
 3. Open an issue.
 4. Contact your instructor/TA:
    1. For Aarhus, this is [Claudio](mailto:claudio.gomes@ece.au.dk)    2. For Polytechnique, this is [Bentley](mailto:bentley.oakes@polymtl) and/or [Roozbeh](mailto:roozbeh.aghili@polymtl.ca).

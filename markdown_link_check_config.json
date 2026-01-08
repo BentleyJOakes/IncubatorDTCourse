@@ -1,7 +1,7 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "^https://github.com/clagms/IncubatorDTCourse/issues"
+      "pattern": "^https://github.com/BentleyJOakes/IncubatorDTCourse/issues"
     }
   ],
   "replacementPatterns": [],

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>4-IncubatorTwin</title>
+  </head>
+  <body>
+    <header></header>
+    <main>
+
+<h1>4-IncubatorTwin</h1>
+
+      This tutorial will set-up a UI to control the desired temperature in the incubator, and send this message using RabbitMQ. We will have the following steps:
+
+      <ul>
+
+          <li>Add SendMessage function</li>
+          <li>Add UI</li>
+          <li>Connect UI to function</li>
+      </ul>
+
+This tutorial is based on the <a href="https://github.com/INTO-CPS-Association/example_digital-twin_incubator/tree/master/software/digital_twin/visualization">existing incubator visualization</a> created by <a href="https://github.com/lisa5814">Lisa Maria Huynh</a>.
+
+        <h2>a. Add SendMessage function</h2>
+
+        <ul>
+            <li>1. In the 'RabbitMQListener.cs' file, add the following function.</li>
+            <li>It can go anywhere in the file, just not inside another function.</li>
+            <li>This function takes some JSON, and sends it with a routing key that the incubator controller listens to.</li>
+        </ul>
+
+        <pre>
+    public void SendMessage(string jsonPayload)
+	{
+		if (channel == null || !channel.IsOpen)
+		{
+			GD.PrintErr("RabbitMQ channel not open");
+			return;
+		}
+
+		var body = Encoding.ASCII.GetBytes(jsonPayload);
+
+		channel.BasicPublish(
+			exchange: exchangeName,
+			routingKey: "incubator.update.closed_loop_controller.parameters",
+			basicProperties: null,
+			body: body
+		);
+
+		GD.Print("Sent message:", jsonPayload);
+	}
+            </pre>
+
+        <img src="figures/SendMessage.png" height="627" width="847"/>
+
+    <h2>b. Build the UI</h2>
+
+    In this step, we'll build up the UI so that we can provide interaction for the user on the incubator's desired temperature.
+
+    <ul>
+        <li>2. Click on the '3d' tab at the top of the window so that you are looking at the incubator scene.</li>
+        <li>3. Create a new node in the scene tree by right-clicking the incubator node at the top of the pane on the left. Find the 'VBoxContainer' type, which is rows of rectangles.</li>
+        <li>A 'VBoxContainer' will store UI elements vertically in rows.</li>
+        <li>4. Right-click this new node, and rename it to 'temp_slider'. Right-click again, and select 'Access as unique name'.</li>
+        <li>5. Right-click this 'temp_slider' node, and add an 'HSlider' node.</li>
+        <li>6. Right-click this 'temp_slider' node, and add a 'Label' node.</li>
+        <li>These UI nodes should look like this. The 'temp_slider' should be a child of the 'incubator_root' node.</li>
+    </ul>
+
+        <img src="figures/temp_ui.png" height="84" width="312"/>
+
+    <ul>
+        <li>7. Click on the label. In the Inspector (on the right), set the text to be 'Desired Temp'.</li>
+        <li>8. Click on the slider. In the Inspector (on the right), set the max value and step to match the below figure.</li>
+    </ul>
+        <img src="figures/slider_range.png" height="135" width="288"/>
+
+    <ul>
+        <li>If you run the project, the UI should look something like this:</li>
+    </ul>
+
+        <img src="figures/temp_ui_running.png" height="54" width="131"/>
+
+    <ul>
+        <li>So we have a slider for controlling the desired temperature within the incubator.</li>
+        <li>Of course, feel free to make a better UI if you want.</li>
+    </ul>
+
+    <h2>c. Connect the UI to send a RabbitMQ message</h2>
+
+        The last step is to connect these UI elements to the RabbitMQ code.
+        <ul>
+            <li>9. Edit the 'incubator.gd' script, by finding it in the files in the bottom-left, or clicking on the script icon beside the 'incubator_root' node.</li>
+            <li>10. At the bottom of this file, add this code.</li>
+            </ul>
+
+        <pre>
+        func _on_temp_slider_drag_ended(value_changed: bool) -> void:
+            var value = %temp_slider.get_node("HSlider").value
+            print("Setting set temperature to " + str(value))
+
+            %temp_slider.get_node("Label").text = "Desired Temp: " + str(value) + "°C"
+
+            var payload = {
+                "temperature_desired": value
+            }
+            var json_string = JSON.stringify(payload)
+            rmq_connection.SendMessage(json_string)
+        </pre>
+
+        <img src="figures/drag_code.png" height="295" width="616"/>
+
+        <ul>
+            <li>Explanation of code:</li>
+            <li>We get the 'value' by finding the 'temp_slider' node, then getting the 'HSlider' child, then getting the actual 'value' set on that slider.</li>
+            <li>We set the text of the 'Label' child.</li>
+            <li>We then construct a dictionary, convert it to JSON, and pass it to the 'SendMessage' function.</li>
+        </ul>
+
+
+        <ul>
+            <li>11. Finally, in the '_ready()' function of the 'incubator_root' script, add this line:</li>
+            </ul>
+
+        <pre>
+        %temp_slider.get_node("HSlider").connect("drag_ended", _on_temp_slider_drag_ended)
+        </pre>
+
+        <img src="figures/root_ready.png" height="86" width="734"/>
+
+        <ul>
+            <li>Explanation: We first find the 'temp_slider' node (with the unique name). Then we find the child node named 'HSlider'. Then we connect the 'drag_ended' signal on the HSlider, to the '_on_temp_slider_drag_ended' function.</li>
+            <li>Further explanation: This means whenever the user drags the slider, we will call the function.</li>
+
+        </ul>
+
+        <p>That's it! Test it, and whenever the slider is dragged, the incubator should be set to the desired temperature. You can see the heater turn on and off depending on the actual temperature. Note that the incubator controller is hard-coded to not accept a desired temperature above 45 degrees.</p>
+
+
+    <h2>d. Conclusion</h2>
+<p>Below is how this project looks at the end of this lab. Again, feel free to make your own modifications.</p>
+        <img src="figures/final_dt.png" height="467" width="1038"/>
+
+        <ul>
+            <li>We now have a Digital Twin of the incubator! We can control it with Godot by sending RabbitMQ messages, which can be read by both the simulated version and the real physical incubator. </li>
+        </ul>
+
+    </main>
+
+    <footer></footer>
+
+  </body>
+</html>

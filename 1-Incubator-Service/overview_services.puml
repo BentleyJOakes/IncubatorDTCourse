@@ -1,0 +1,48 @@
+@startuml
+title Digital Twin Services – Logical Communication View
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam wrapWidth 220
+skinparam maxMessageSize 120
+
+'=== Components ===
+component "AverageService\n<<RPC Server>>\nComputes average(list<float>)" as AVG
+
+component "MovingAverageTemperatureService\n<<Hybrid Service>>\n- Reactive: maintains moving average (last N)\n- RPC Client: calls AverageService\n- RPC Server: reset()" as MAT
+
+component "PTReconfigurationService\n<<Reactive Service>>\n- Monitors deviation\n- Triggers reconfiguration" as PTR
+
+component "Incubator Physical Twin\n(PT)\n- Publishes temperature\n- Accepts reconfiguration" as PT
+
+
+'=== Reactive data flows ===
+PT --> MAT : temperature updates\n<<event stream>>
+
+MAT --> PTR : moving average values\n<<event stream>>
+
+'=== RPC interactions ===
+MAT --> AVG : average(list<float>)\n<<RPC request/reply>>
+
+PTR --> MAT : reset()\n<<RPC request/reply>>
+
+
+'=== Control / command flow ===
+PTR --> PT : reconfigure()\n<<command>>
+
+
+'=== Notes ===
+note right of MAT
+Hybrid service:
+• Consumes temperature events
+• Calls AverageService via RPC
+• Exposes reset() as RPC
+end note
+
+note right of PTR
+Reactive logic:
+if |movingAvg − actualTemp| > threshold
+→ reconfigure PT
+end note
+
+@enduml

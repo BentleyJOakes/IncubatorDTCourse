@@ -54,7 +54,9 @@ export PATH="$HOME/.local/bin:$PATH"
 Then reload and verify again:
 
 ```bash
-source ~/.bashrc
+# Reload the shell profile you edited above:
+source ~/.bashrc   # if you edited ~/.bashrc
+source ~/.zshrc    # if you edited ~/.zshrc
 uv --version
 ```
 
